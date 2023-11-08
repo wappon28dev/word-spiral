@@ -8,9 +8,9 @@ export class RoomsDB {
     return {
       id: row.id,
       status: row.status,
-      users: JSON.parse(row.users),
-      leader: row.leader,
-      items: JSON.parse(row.items),
+      leader_id: row.leader_id,
+      user_ids: JSON.parse(row.user_ids),
+      data: JSON.parse(row.data),
     };
   }
 

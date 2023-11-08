@@ -21,7 +21,9 @@
     "paths": {
       "@/*": ["./src/*"],
       "panda/*": ["./panda/*"],
-      "package": ["./package.json"]
+      "package": ["./package.json"],
+      "@api-rooms": ["../api-rooms/src/index.ts"],
+      "*": ["../api-rooms/src/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

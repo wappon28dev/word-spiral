@@ -1,25 +1,35 @@
 import { z } from "zod";
 
+export const zRoomUser = z.object({
+  name: z.string(),
+  score: z.number(),
+});
+
 export const zRoom = z.object({
   id: z.number(),
   status: z.string(),
-  users: z.array(z.string()),
-  leader: z.string(),
-  items: z.array(
-    z.object({
-      user: z.string(),
-      word: z.string(),
-      cosSimilarity: z.number().optional(),
-    })
-  ),
+  leader_id: z.number(),
+  user_ids: z.array(z.number()),
+  data: z.object({
+    items: z.array(
+      z.object({
+        user: z.number(),
+        word: z.string(),
+      })
+    ),
+    info: z.object({
+      roomName: z.string(),
+    }),
+  }),
 });
 
 export type RoomsRaw = {
   id: number;
   status: string;
-  users: string;
-  leader: string;
-  items: string;
+  leader_id: number;
+  user_ids: string;
+  data: string;
 };
 
 export type Rooms = z.infer<typeof zRoom>;
+export type RoomUser = z.infer<typeof zRoomUser>;

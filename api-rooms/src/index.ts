@@ -9,8 +9,9 @@ const app = createHono()
     if (err instanceof HTTPException) {
       return err.getResponse();
     }
-    console.error(err);
+    console.error(`error occurred: ${err}`);
     return ctx.text("Internal Server Error", 500);
   });
 
+export type AppType = typeof app;
 export default app;
