@@ -9,7 +9,7 @@ const app = createHono()
     if (err instanceof HTTPException) {
       return err.getResponse();
     }
-    console.error(`error occurred: ${err}`);
+    console.error(`error occurred: ${err}`, err.stack);
     return ctx.text("Internal Server Error", 500);
   });
 

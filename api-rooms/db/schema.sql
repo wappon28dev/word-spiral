@@ -29,5 +29,5 @@ VALUES
     'READY',
     1,
     '[1, 2]',
-    '{ items: [], info: { roomName: "test" }}'
+    '{"items": [], "info": { "roomName": "test" }}'
   );

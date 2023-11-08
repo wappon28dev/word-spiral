@@ -7,7 +7,11 @@ export const zRoomUser = z.object({
 
 export const zRoom = z.object({
   id: z.number(),
-  status: z.string(),
+  status: z.union([
+    z.literal("INVITATION"),
+    z.literal("PLAYING"),
+    z.literal("FINISHED"),
+  ]),
   leader_id: z.number(),
   user_ids: z.array(z.number()),
   data: z.object({
@@ -31,5 +35,5 @@ export type RoomsRaw = {
   data: string;
 };
 
-export type Rooms = z.infer<typeof zRoom>;
+export type Room = z.infer<typeof zRoom>;
 export type RoomUser = z.infer<typeof zRoomUser>;

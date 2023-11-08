@@ -12,7 +12,7 @@ export class ResponseNotOkError extends HTTPException {
   }
 }
 export class DatabaseError extends HTTPException {
-  constructor(reason: string, status?: number) {
-    super(status ?? 500, { message: `Database Error: ${reason}` });
+  constructor(reason: string, status: number = 500) {
+    super(status, { message: `Database Error: ${reason}` });
   }
 }
