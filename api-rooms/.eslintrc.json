@@ -1,0 +1,25 @@
+{
+  "root": true,
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "node": true
+  },
+  "extends": ["airbnb-typescript/base", "standard-with-typescript", "prettier"],
+  "parserOptions": {
+    "ecmaVersion": 13,
+    "sourceType": "module",
+    "project": "./tsconfig.json"
+  },
+  "plugins": [],
+  "rules": {
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "import/prefer-default-export": "off",
+    "@typescript-eslint/consistent-type-definitions": ["error", "type"],
+    "no-underscore-dangle": "off",
+    "@typescript-eslint/prefer-nullish-coalescing": "off",
+    "@typescript-eslint/strict-boolean-expressions": "off",
+    "import/no-extraneous-dependencies": "off"
+  }
+}

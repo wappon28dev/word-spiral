@@ -1,0 +1,17 @@
+{
+  "name": "word-spiral",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev:api-rooms": "yarn workspace @word-spiral/api-rooms dev",
+    "dev:api-word2vec": "yarn workspace @word-spiral/api-word2vec dev",
+    "dev:client": "yarn workspace @word-spiral/client dev"
+  },
+  "workspaces": {
+    "packages": [
+      "api-rooms",
+      "api-word2vec",
+      "client"
+    ]
+  }
+}
