@@ -1,5 +1,5 @@
 import { DatabaseError } from "lib/error";
-import { type User, type UserRaw } from "types/user";
+import { type UserReq, type User, type UserRaw } from "types/user";
 import { z } from "zod";
 
 type D1ResultUserRaw = D1Result<UserRaw>;
@@ -37,7 +37,7 @@ export class UsersDB {
     return users;
   }
 
-  public async create({ name }: { name: string }): Promise<number> {
+  public async create({ name }: UserReq): Promise<number> {
     console.log("Adding user");
     let insertResult: D1ResultUserRaw | undefined;
 
