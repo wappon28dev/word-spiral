@@ -31,8 +31,6 @@ export function push(
   router.push(`/${arr.join("/")}`);
 }
 
-export type ElementType<T> = T extends Array<infer U> ? U : T;
-
 export type PartialRequire<O, K extends keyof O> = {
   [P in K]-?: O[P];
 } & O;

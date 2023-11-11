@@ -1,7 +1,7 @@
 import { nprogress } from "@mantine/nprogress";
 import { atom, type useSetAtom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
-import { type HotkeyGroups, type CharacterType } from "@/types/atom/ui";
+import { type CharacterType } from "@/types/atom/ui";
 import { getLocalStorageKey } from "../local-storage";
 
 export const atomIsLoading = atom(true);
@@ -24,9 +24,4 @@ export function loadingComplete(
 export const atomCharacterType = atomWithStorage<CharacterType>(
   getLocalStorageKey("characterType"),
   "ruby"
-);
-
-export const atomHotkeyGroups = atomWithStorage<HotkeyGroups>(
-  getLocalStorageKey("hotkeyGroups"),
-  ["upDown", "enter", "space", "leftRight"]
 );
