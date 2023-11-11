@@ -9,9 +9,10 @@ import { z } from "zod";
 export const rooms = createHono()
   .get("/", async (ctx) => {
     const _rooms = await new RoomsDB(ctx.env.ROOMS_DB).getAll();
-    console.log(_rooms);
 
-    return ctx.jsonT(z.array(zRoom).parse(_rooms));
+    const zRes = z.array(zRoom);
+
+    return ctx.jsonT(zRes.parse(_rooms));
   })
 
   .post(
@@ -89,8 +90,8 @@ export const rooms = createHono()
       const userId = await new UsersDB(ctx.env.ROOMS_DB).create({
         name: user.name,
       });
+      await new RoomDB(ctx.env.ROOMS_DB, roomId).addUser(userId);
       await new UserDB(ctx.env.ROOMS_DB, userId).setRoomId(roomId);
-      // TODO: update room
 
       const res = { userId };
       const zRes = z.object({ userId: z.number() });
@@ -138,4 +139,6 @@ export const rooms = createHono()
   .delete("/:id", async (ctx) => {
     const roomId = Number(ctx.req.param("id"));
     await new RoomDB(ctx.env.ROOMS_DB, roomId).destroy();
+
+    return ctx.text("", 204);
   });

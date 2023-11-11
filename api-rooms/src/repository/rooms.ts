@@ -2,6 +2,7 @@
 // eslint-disable-next-line max-classes-per-file
 import { DatabaseError } from "lib/error";
 import { type RoomRaw, type Room } from "types/rooms";
+import { type User } from "types/user";
 import { type ElementType } from "types/util";
 import { z } from "zod";
 
@@ -143,8 +144,38 @@ export class RoomDB extends RoomsDB {
     let updateResult: D1ResultRoomRaw | undefined;
     try {
       updateResult = await this.db
-        .prepare(`UPDATE rooms SET status = '?' WHERE id = ?`)
+        .prepare(`UPDATE rooms SET status = ? WHERE id = ?`)
         .bind(status, this.id)
+        .run();
+    } catch (err: any) {
+      throw new DatabaseError(
+        `Failed to update user: ${JSON.stringify({
+          summary: err.message,
+          detail: err.cause.message,
+        })}`
+      );
+    }
+
+    if (!updateResult?.success) {
+      throw new DatabaseError("Failed to update user");
+    }
+  }
+
+  async addUser(userId: User["id"]): Promise<void> {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    const { user_ids } = await this.get();
+    const newUserIds = [...user_ids, userId];
+
+    let updateResult: D1ResultRoomRaw | undefined;
+
+    try {
+      updateResult = await this.db
+        .prepare(
+          `UPDATE rooms SET user_ids = '${JSON.stringify(
+            newUserIds
+          )}' WHERE id = ?`
+        )
+        .bind(this.id)
         .run();
     } catch (err: any) {
       throw new DatabaseError(

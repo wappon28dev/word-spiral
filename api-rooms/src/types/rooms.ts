@@ -13,7 +13,7 @@ export const zRoom = z.object({
   data: z.object({
     items: z.array(
       z.object({
-        user: z.number(),
+        userId: z.number(),
         word: z.string(),
       })
     ),
