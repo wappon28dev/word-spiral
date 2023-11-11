@@ -26,7 +26,7 @@ INSERT INTO
   rooms (status, leader_id, user_ids, data)
 VALUES
   (
-    'READY',
+    'TEST',
     1,
     '[1, 2]',
     '{"items": [], "info": { "roomName": "test" }}'

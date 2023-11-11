@@ -1,11 +1,16 @@
+/* eslint-disable no-console */
+// eslint-disable-next-line max-classes-per-file
 import { DatabaseError } from "lib/error";
-import { type RoomsRaw, type Room, type RoomUser } from "types/rooms";
+import { type RoomRaw, type Room } from "types/rooms";
+import { type ElementType } from "types/util";
 import { z } from "zod";
+
+type D1ResultRoomRaw = D1Result<RoomRaw>;
 
 export class RoomsDB {
   constructor(protected readonly db: D1Database) {}
 
-  private parseRoom(row: RoomsRaw): Room {
+  protected static parse(row: RoomRaw): Room {
     return {
       id: row.id,
       status: row.status as Room["status"],
@@ -16,7 +21,7 @@ export class RoomsDB {
   }
 
   async getAll(): Promise<Room[]> {
-    let selectResult: D1Result<RoomsRaw> | undefined;
+    let selectResult: D1ResultRoomRaw | undefined;
     try {
       selectResult = await this.db.prepare("SELECT * FROM rooms").all();
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -35,61 +40,15 @@ export class RoomsDB {
 
     const rooms: Room[] = [];
     selectResult.results.forEach((row) => {
-      rooms.push(this.parseRoom(row));
+      rooms.push(RoomsDB.parse(row));
     });
 
     return rooms;
   }
 
-  async makeUserInRoom(userId: number, roomId: number): Promise<void> {
-    console.log(`Making user ${userId} in room ${roomId}`);
-    let updateResult: D1Result<RoomsRaw> | undefined;
-    try {
-      updateResult = await this.db
-        .prepare(`UPDATE users SET room_id = ${roomId} WHERE id = ${userId}`)
-        .run();
-    } catch (err: any) {
-      throw new DatabaseError(
-        `Failed to update user: ${JSON.stringify({
-          summary: err.message,
-          detail: err.cause.message,
-        })}`
-      );
-    }
-
-    if (!updateResult?.success) {
-      throw new DatabaseError("Failed to update user");
-    }
-    console.log(`Done!`);
-  }
-
-  protected async addUser({ name }: { name: string }): Promise<number> {
-    console.log("Adding user");
-    let insertResult: D1Result<RoomUser> | undefined;
-
-    try {
-      insertResult = await this.db
-        .prepare("INSERT INTO users (name) VALUES (?)")
-        .bind(name)
-        .run();
-    } catch (err: any) {
-      console.error(err);
-      throw new DatabaseError("Failed to insert user");
-    }
-
-    if (!insertResult?.success) {
-      throw new DatabaseError("Failed to insert user");
-    }
-
-    console.log(`Added User: ${JSON.stringify(insertResult)}}`);
-    return z
-      .preprocess((v) => Number(v), z.number().positive())
-      .parse(insertResult.meta.last_row_id);
-  }
-
-  private async addRoom(leaderId: number): Promise<number> {
+  public async create(leaderId: number): Promise<number> {
     console.log("Adding room");
-    let insertResult: D1Result<RoomsRaw> | undefined;
+    let insertResult: D1ResultRoomRaw | undefined;
 
     const emptyData = { items: [], info: { roomName: "test" } };
 
@@ -119,18 +78,6 @@ export class RoomsDB {
 
     return z.number().parse(insertResult.meta.last_row_id);
   }
-
-  async addFirst({
-    name,
-  }: {
-    name: string;
-  }): Promise<{ userId: number; roomId: number }> {
-    const userId = await this.addUser({ name });
-    const roomId = await this.addRoom(userId);
-    await this.makeUserInRoom(userId, roomId);
-
-    return { userId, roomId };
-  }
 }
 
 export class RoomDB extends RoomsDB {
@@ -139,15 +86,21 @@ export class RoomDB extends RoomsDB {
     readonly id: number
   ) {
     super(db);
+
+    void this.exists().then((_exists) => {
+      if (!_exists) {
+        throw new DatabaseError("Room does not exist");
+      }
+    });
   }
 
-  private async exists(): Promise<boolean> {
-    let existsResult: D1Result<Room> | undefined | null;
+  public async exists(): Promise<boolean> {
+    let existsResult: D1ResultRoomRaw | undefined | null;
     try {
       existsResult = await this.db
         .prepare("SELECT * FROM rooms WHERE id = ?")
         .bind(this.id)
-        .first();
+        .run();
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       throw new DatabaseError(
@@ -155,25 +108,39 @@ export class RoomDB extends RoomsDB {
       );
     }
 
-    if (existsResult === undefined) {
+    if (!existsResult?.success) {
       throw new DatabaseError("Failed to check whether user exists");
     }
 
-    return existsResult !== null;
+    return existsResult.results.length > 0;
   }
 
-  async addRoomUser({ name }: { name: string }): Promise<{ userId: number }> {
-    if (!(await this.exists())) {
-      throw new DatabaseError("Room does not exist");
+  async get(): Promise<Room> {
+    let selectResult: D1ResultRoomRaw | null | undefined;
+    try {
+      selectResult = await this.db
+        .prepare("SELECT * FROM rooms WHERE id = ?")
+        .bind(this.id)
+        .run();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      throw new DatabaseError(
+        `Failed to get rooms: ${JSON.stringify({
+          summary: err.message,
+          detail: err.cause.message,
+        })}`
+      );
     }
 
-    const userId = await this.addUser({ name });
-    await this.makeUserInRoom(userId, this.id);
-    return { userId };
+    if (!selectResult?.success) {
+      throw new DatabaseError("Failed to get room");
+    }
+
+    return RoomDB.parse(selectResult.results[0]);
   }
 
   async updateStatus(status: Room["status"]): Promise<void> {
-    let updateResult: D1Result<RoomsRaw> | undefined;
+    let updateResult: D1ResultRoomRaw | undefined;
     try {
       updateResult = await this.db
         .prepare(`UPDATE rooms SET status = '?' WHERE id = ?`)
@@ -190,6 +157,55 @@ export class RoomDB extends RoomsDB {
 
     if (!updateResult?.success) {
       throw new DatabaseError("Failed to update user");
+    }
+  }
+
+  async addItem(item: ElementType<Room["data"]["items"]>): Promise<void> {
+    const { data } = await this.get();
+    const newData: Room["data"] = {
+      items: [...data.items, item],
+      info: data.info,
+    };
+
+    let updateResult: D1ResultRoomRaw | undefined;
+
+    try {
+      updateResult = await this.db
+        .prepare(`UPDATE rooms SET data = ? WHERE id = ?`)
+        .bind(JSON.stringify(newData), this.id)
+        .run();
+    } catch (err: any) {
+      throw new DatabaseError(
+        `Failed to update item: ${JSON.stringify({
+          summary: err.message,
+          detail: err.cause.message,
+        })}`
+      );
+    }
+
+    if (!updateResult?.success) {
+      throw new DatabaseError("Failed to update item");
+    }
+  }
+
+  async destroy(): Promise<void> {
+    let destroyResult: D1ResultRoomRaw | undefined;
+    try {
+      destroyResult = await this.db
+        .prepare(`DELETE FROM rooms WHERE id = ?`)
+        .bind(this.id)
+        .run();
+    } catch (err: any) {
+      throw new DatabaseError(
+        `Failed to destroy room: ${JSON.stringify({
+          summary: err.message,
+          detail: err.cause.message,
+        })}`
+      );
+    }
+
+    if (!destroyResult?.success) {
+      throw new DatabaseError("Failed to destroy room");
     }
   }
 }

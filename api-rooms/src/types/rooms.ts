@@ -1,16 +1,12 @@
 import { z } from "zod";
 
-export const zRoomUser = z.object({
-  name: z.string(),
-  score: z.number(),
-});
-
 export const zRoom = z.object({
   id: z.number(),
   status: z.union([
     z.literal("INVITATION"),
     z.literal("PLAYING"),
     z.literal("FINISHED"),
+    z.literal("TEST"),
   ]),
   leader_id: z.number(),
   user_ids: z.array(z.number()),
@@ -27,7 +23,7 @@ export const zRoom = z.object({
   }),
 });
 
-export type RoomsRaw = {
+export type RoomRaw = {
   id: number;
   status: string;
   leader_id: number;
@@ -36,4 +32,3 @@ export type RoomsRaw = {
 };
 
 export type Room = z.infer<typeof zRoom>;
-export type RoomUser = z.infer<typeof zRoomUser>;

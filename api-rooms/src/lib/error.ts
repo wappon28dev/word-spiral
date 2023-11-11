@@ -1,3 +1,4 @@
+// eslint-disable-next-line max-classes-per-file
 import { HTTPException } from "hono/http-exception";
 
 export class NetworkError extends HTTPException {
