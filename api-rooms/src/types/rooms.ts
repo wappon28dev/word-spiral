@@ -8,8 +8,8 @@ export const zRoom = z.object({
     z.literal("FINISHED"),
     z.literal("TEST"),
   ]),
-  leader_id: z.number(),
-  user_ids: z.array(z.number()),
+  leaderId: z.number(),
+  userIdList: z.array(z.number()),
   data: z.object({
     items: z.array(
       z.object({
@@ -27,7 +27,7 @@ export type RoomRaw = {
   id: number;
   status: string;
   leader_id: number;
-  user_ids: string;
+  user_id_list: string;
   data: string;
 };
 

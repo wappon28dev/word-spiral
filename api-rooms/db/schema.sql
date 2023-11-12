@@ -6,7 +6,7 @@ CREATE TABLE rooms (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   status VARCHAR(255) NOT NULL,
   leader_id INTEGER NOT NULL,
-  user_ids VARCHAR(255) NOT NULL,
+  user_id_list VARCHAR(255) NOT NULL,
   data VARCHAR(255) NOT NULL
 );
 
@@ -23,7 +23,7 @@ VALUES
   ('bob', 1);
 
 INSERT INTO
-  rooms (status, leader_id, user_ids, data)
+  rooms (status, leader_id, user_id_list, data)
 VALUES
   (
     'TEST',

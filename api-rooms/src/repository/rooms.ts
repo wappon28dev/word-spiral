@@ -15,8 +15,8 @@ export class RoomsDB {
     return {
       id: row.id,
       status: row.status as Room["status"],
-      leader_id: row.leader_id,
-      user_ids: JSON.parse(row.user_ids),
+      leaderId: row.leader_id,
+      userIdList: JSON.parse(row.user_id_list),
       data: JSON.parse(row.data),
     };
   }
@@ -57,7 +57,7 @@ export class RoomsDB {
       insertResult = await this.db
         .prepare(
           `INSERT INTO
-            rooms (status, leader_id, user_ids, data)
+            rooms (status, leader_id, user_id_list, data)
           VALUES (
             'INVITATION',
             ${leaderId},
@@ -163,15 +163,15 @@ export class RoomDB extends RoomsDB {
 
   async addUser(userId: User["id"]): Promise<void> {
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    const { user_ids } = await this.get();
-    const newUserIds = [...user_ids, userId];
+    const { userIdList } = await this.get();
+    const newUserIds = [...userIdList, userId];
 
     let updateResult: D1ResultRoomRaw | undefined;
 
     try {
       updateResult = await this.db
         .prepare(
-          `UPDATE rooms SET user_ids = '${JSON.stringify(
+          `UPDATE rooms SET user_id_list = '${JSON.stringify(
             newUserIds
           )}' WHERE id = ?`
         )

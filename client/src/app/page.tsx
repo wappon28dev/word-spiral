@@ -44,6 +44,11 @@ export default function Page(): ReactElement {
     console.log(rooms);
   };
 
+  const onStream = async (): Promise<void> => {
+    const rooms = await room.awaitUserTurns();
+    console.log(rooms);
+  };
+
   return (
     <p.main h="100%" w="100%">
       <p.div>
@@ -52,6 +57,7 @@ export default function Page(): ReactElement {
         <Button onClick={onGet}>取得</Button>
         <Button onClick={onStart}>スタート</Button>
         <Button onClick={onGetAll}>全取得</Button>
+        <Button onClick={onStream}>順番を待つ</Button>
       </p.div>
       <p.div>
         userId: {userId}
