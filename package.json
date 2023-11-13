@@ -6,6 +6,7 @@
     "dev:api-rooms": "yarn workspace @word-spiral/api-rooms dev",
     "dev:api-word2vec": "yarn workspace @word-spiral/api-word2vec dev",
     "dev:client": "yarn workspace @word-spiral/client dev",
+    "build": "yarn workspace @word-spiral/client build",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "fmt": "prettier --write ."
