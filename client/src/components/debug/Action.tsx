@@ -74,6 +74,11 @@ export function Action(): ReactElement {
       .addItem({ word })
       .then(() => {
         setWord("");
+        setActionStatus({
+          message: "Sent item!",
+          from: "sendItem",
+          status: "success",
+        });
       })
       .catch((e) => {
         console.error(e);

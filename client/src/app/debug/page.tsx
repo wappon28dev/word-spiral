@@ -63,10 +63,12 @@ export default function PageDebug(): ReactElement {
               gridTemplateColumns="repeat(auto-fit, minmax(590px, 1fr))"
               w="100%"
             >
-              <Definition />
-              <p.div display="grid" gap="10px" gridTemplateRows="1fr 1fr">
-                <Status />
+              <p.div display="flex" flexDir="column" gap="10px">
+                <Definition />
                 <Action />
+              </p.div>
+              <p.div>
+                <Status />
               </p.div>
             </p.div>
           </p.article>

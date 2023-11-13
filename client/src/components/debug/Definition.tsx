@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { TextInput, NumberInput, Button, Popover, Select } from "@mantine/core";
 import { mdiCheck } from "@mdi/js";
 import Icon from "@mdi/react";
@@ -14,6 +15,7 @@ import {
   atomRoomId,
   atomActionStatus,
 } from "@/lib/store/data";
+import { requestWithActionStatus } from "@/lib/request";
 
 export function Definition(): ReactElement {
   const STATUS_LIST = ["INVITATION", "PLAYING", "FINISHED", "TEST"] as const;
@@ -31,7 +33,7 @@ export function Definition(): ReactElement {
   const [status, setStatus] = useState<(typeof STATUS_LIST)[number]>();
   const [statusOpened, setStatusOpened] = useState(false);
   const [actionLoading, setActionLoading] = useState<
-    "STATUS" | "SEND" | "AUTO_CREATE" | "CREATE_USER"
+    "STATUS" | "SEND" | "AUTO_CREATE" | "CREATE_USER" | "DELETE"
   >();
 
   async function createUserWidthRoom(): Promise<void> {
@@ -44,29 +46,67 @@ export function Definition(): ReactElement {
       return;
     }
 
-    setActionLoading("CREATE_USER");
+    void requestWithActionStatus({
+      requestInfo: {
+        from: "createUserWidthRoom",
+        message: "creating user",
+        setActionStatus,
+      },
 
-    void rooms
-      .join(roomId, { name: userName })
-      .then(({ userId: _userId }) => {
+      request: rooms.join(roomId, { name: userName }),
+
+      onRequestBefore: () => {
+        setActionLoading("CREATE_USER");
+      },
+      onSucceeded: ({ userId: _userId }) => {
         setUserId(_userId);
         setActionStatus({
           message: `Created user! userId: ${_userId}`,
           from: "createUserWidthRoom",
           status: "success",
         });
-      })
-      .catch((e) => {
-        console.error(e);
-        setActionStatus({
-          message: e.message,
-          from: "createUserWidthRoom",
-          status: "error",
-        });
-      })
-      .finally(() => {
+      },
+      onRequestAfter: () => {
         setActionLoading(undefined);
+      },
+    });
+  }
+
+  async function deleteRoom(): Promise<void> {
+    if (roomId == null || userId == null) {
+      setActionStatus({
+        message: "roomId or userId is empty",
+        from: "deleteRoom",
+        status: "error",
       });
+      return;
+    }
+
+    const room = new Room(roomId, userId, roomClient);
+
+    void requestWithActionStatus({
+      requestInfo: {
+        from: "deleteRoom",
+        message: "deleting room",
+        setActionStatus,
+      },
+
+      request: room.destroy(),
+
+      onRequestBefore: () => {
+        setActionLoading("DELETE");
+      },
+      onSucceeded: () => {
+        setActionStatus({
+          message: "Deleted room!",
+          from: "deleteRoom",
+          status: "success",
+        });
+      },
+      onRequestAfter: () => {
+        setActionLoading(undefined);
+      },
+    });
   }
 
   async function updateStatus(): Promise<void> {
@@ -81,30 +121,33 @@ export function Definition(): ReactElement {
 
     const room = new Room(roomId, userId, roomClient);
 
-    setActionStatus({
-      message: "Updating status...",
-      from: "updateStatus",
-      status: "loading",
-    });
-    setActionLoading("STATUS");
+    void requestWithActionStatus({
+      requestInfo: {
+        from: "updateStatus",
+        message: "updating status",
+        setActionStatus,
+      },
 
-    void room
-      .updateStatus({ status })
-      .catch((e) => {
-        console.error(e);
+      request: room.updateStatus({ status }),
+
+      onRequestBefore: () => {
+        setActionLoading("STATUS");
+      },
+      onSucceeded: () => {
         setActionStatus({
-          message: e.message,
+          message: `Updated status! status: ${status}`,
           from: "updateStatus",
-          status: "error",
+          status: "success",
         });
-      })
-      .finally(() => {
+      },
+      onRequestAfter: () => {
         setActionLoading(undefined);
-      });
+      },
+    });
   }
 
   async function autoCreate(): Promise<void> {
-    if (userName === "") {
+    if (userName === "" || userName == null) {
       setActionStatus({
         message: "userName is empty",
         from: "autoCreate",
@@ -113,38 +156,28 @@ export function Definition(): ReactElement {
       return;
     }
 
-    setActionStatus({
-      message: "Auto creating...",
-      from: "autoCreate",
-      status: "loading",
-    });
-    setActionLoading("AUTO_CREATE");
+    void requestWithActionStatus({
+      requestInfo: {
+        from: "autoCreate",
+        message: "auto creating",
+        setActionStatus,
+      },
 
-    void rooms
-      .create({
-        name: "test",
-      })
-      .then(({ roomId: _roomId, userId: _userId }) => {
+      request: rooms.create({ name: userName }),
+
+      onRequestBefore: () => {
+        setActionLoading("AUTO_CREATE");
+      },
+      onSucceeded: ({ roomId: _roomId, userId: _userId }) => {
         setRoomId(_roomId);
         setUserId(_userId);
-        setActionStatus({
-          message: `Auto created! roomId: ${_roomId}, userId: ${_userId}`,
-          from: "autoCreate",
-          status: "success",
-        });
-      })
-      .catch((e) => {
-        console.error(e);
-        setActionStatus({
-          message: e.message,
-          from: "autoCreate",
-          status: "error",
-        });
-      })
-      .finally(() => {
+      },
+      onRequestAfter: () => {
         setActionLoading(undefined);
-      });
+      },
+    });
   }
+
   return (
     <Section bg="blue.100" name="Definition">
       <Section name="API">
@@ -168,9 +201,8 @@ export function Definition(): ReactElement {
         </p.div>
       </Section>
       <Section name="User">
-        <p.div display="grid" gap="10px" gridTemplateColumns="60px 1fr 100px">
+        <p.div display="grid" gap="10px" gridTemplateColumns="100px 1fr 100px">
           <NumberInput
-            disabled
             label="ID"
             noClampOnBlur
             onChange={(e) => {
@@ -231,6 +263,10 @@ export function Definition(): ReactElement {
             color="red"
             disabled={userId == null || roomId == null}
             fullWidth
+            loading={actionLoading === "DELETE"}
+            onClick={() => {
+              void deleteRoom();
+            }}
             size="lg"
             variant="light"
           >
