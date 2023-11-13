@@ -28,13 +28,6 @@ jobs:
       - name: 🎉 Install project dependencies
         run: yarn
 
-      - name: 🍱 Download Archive
-        run: yarn archive download
-        env:
-          DOWNLOAD_URL: ${{ secrets.DOWNLOAD_URL }}
-          DOWNLOAD_KEY: ${{ secrets.DOWNLOAD_KEY }}
-          REMOTE_ZIP_PATH: ""
-
       - name: 🏗️ Generate static files
         run: yarn build
 
@@ -43,7 +36,7 @@ jobs:
         uses: cloudflare/pages-action@v1.4.0
         with:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN_PAGES }}
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
           projectName: word-spiral
           directory: ./out
@@ -85,7 +78,8 @@ jobs:
         run: yarn
 
       - name: 🚀 Deploy workers
-        uses: cloudflare/wrangler-action@2.0.0
+        uses: cloudflare/wrangler-action@v3
         with:
-          apiToken: ${{ secrets.CF_API_TOKEN }}
-          workingDirectory: "./api-rooms"
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN_WORKERS }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: "deploy --minify src/index.ts"
