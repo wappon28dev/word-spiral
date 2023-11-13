@@ -36,10 +36,20 @@ export class Room {
     });
   }
 
+  public _status = this.api.v1.rooms[":id"].status.$put;
   public async startPlaying(): Promise<void> {
-    await this.api.v1.rooms[":id"].status.$put({
+    await this._status({
       param: { id: String(this.roomId) },
       json: { status: "PLAYING" },
+    });
+  }
+
+  public async updateStatus({
+    status,
+  }: InferRequestType<typeof this._status>["json"]): Promise<void> {
+    await this._status({
+      param: { id: String(this.roomId) },
+      json: { status },
     });
   }
 
