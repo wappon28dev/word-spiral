@@ -2,8 +2,7 @@
   "name": "@word-spiral/api-rooms",
   "private": true,
   "type": "module",
-  "version": "0.0.1",
-
+  "version": "0.2.0",
   "scripts": {
     "dev": "wrangler dev src/index.ts",
     "predev": "wrangler d1 execute @word-spiral/rooms-db --local --file=./db/schema.sql",

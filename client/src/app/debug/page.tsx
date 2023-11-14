@@ -39,7 +39,7 @@ export default function PageDebug(): ReactElement {
       gridTemplateRows="1fr auto"
       minH="100vh"
     >
-      <p.div overflowY="auto" w="100%">
+      <p.div w="100%">
         <p.div p="20px">
           <p.div
             alignItems="center"
@@ -53,6 +53,23 @@ export default function PageDebug(): ReactElement {
               {siteId} v{packageJson.version}
             </p.p>
           </p.div>
+          <p.div>
+            {actionStatus != null ? (
+              <>
+                <p.span color="gray.400">{actionStatus.from}:&nbsp;</p.span>
+                <p.span
+                  style={{
+                    color: getColorToken(),
+                  }}
+                >
+                  {actionStatus.message}
+                </p.span>
+              </>
+            ) : (
+              <p.p color="green.500">READY</p.p>
+            )}
+          </p.div>
+
           <p.div p="5px 0" pb="20px">
             <Divider size="md" />
           </p.div>
@@ -74,23 +91,6 @@ export default function PageDebug(): ReactElement {
           </p.article>
         </p.div>
       </p.div>
-      <p.footer bg="white" bottom="0" p="20px" position="float" w="100%">
-        <Divider size="md" />
-        {actionStatus != null ? (
-          <>
-            <p.span color="gray.400">{actionStatus.from}:&nbsp;</p.span>
-            <p.span
-              style={{
-                color: getColorToken(),
-              }}
-            >
-              {actionStatus.message}
-            </p.span>
-          </>
-        ) : (
-          <p.p color="green.500">READY</p.p>
-        )}
-      </p.footer>
     </p.div>
   );
 }
