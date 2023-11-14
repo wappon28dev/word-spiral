@@ -9,8 +9,7 @@
     "dev:client": "yarn workspace @word-spiral/client dev",
     "deploy:api-rooms": "yarn workspace @word-spiral/api-rooms deploy",
     "build": "yarn workspace @word-spiral/client build",
-    "lint": "eslint .",
-    "lint:fix": "eslint --fix .",
+    "lint": "yarn workspace @word-spiral/client lint & yarn workspace @word-spiral/api-rooms lint",
     "fmt": "prettier --write ."
   },
   "workspaces": {

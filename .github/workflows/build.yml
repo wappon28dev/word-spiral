@@ -39,7 +39,7 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN_PAGES }}
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
           projectName: word-spiral
-          directory: ./out
+          directory: ./client/out
         env:
           NODE_VERSION: 20
 
@@ -58,7 +58,7 @@ jobs:
               target_url: "${{ steps.cloudflare_pages_deploy.outputs.url }}",
             });
 
-  build-rooms-api:
+  build-api-rooms:
     runs-on: ubuntu-latest
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     steps:
@@ -72,7 +72,7 @@ jobs:
       - name: 🔨 Prepare Node environment
         uses: actions/setup-node@v3
         with:
-          node-version: 19
+          node-version: 20
 
       - name: 🎉 Install project dependencies
         run: yarn
@@ -83,3 +83,4 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN_WORKERS }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: "deploy --minify src/index.ts"
+          workingDirectory: ./api-rooms

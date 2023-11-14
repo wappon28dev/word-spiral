@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { type InferRequestType, type InferResponseType } from "hono";
 import { type OmitStrict } from "types/util";
 import { type HonoClient } from "@/types/client";
