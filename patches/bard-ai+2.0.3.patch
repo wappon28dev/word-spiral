@@ -1,0 +1,84 @@
+diff --git a/node_modules/bard-ai/index.js b/node_modules/bard-ai/index.js
+index a5705a6..ee0015b 100644
+--- a/node_modules/bard-ai/index.js
++++ b/node_modules/bard-ai/index.js
+@@ -16,13 +16,9 @@ class Bard {
+     // Wether or not to log events to console
+     #verbose = false;
+ 
+-    // Fetch function
+-    #fetch = fetch;
+-
+     constructor(cookie, config) {
+         // Register some settings
+         if (config?.verbose == true) this.#verbose = true;
+-        if (config?.fetch) this.#fetch = config.fetch;
+ 
+         // If a Cookie is provided, initialize
+         if (cookie) {
+@@ -54,10 +50,9 @@ class Bard {
+         try {
+             this.#verbose &&
+                 console.log("🔒 Authenticating your Google account");
+-            responseText = await this.#fetch(this.#bardURL, {
++            responseText = await fetch(this.#bardURL, {
+                 method: "GET",
+                 headers: this.#headers,
+-                credentials: "include",
+             })
+                 .then((response) => response.text())
+         } catch (e) {
+@@ -74,7 +69,7 @@ class Bard {
+             this.SNlM0e = SNlM0e;
+             this.#verbose && console.log("✅ Initialization finished\n");
+             return SNlM0e;
+-        } catch {
++        } catch (e) {
+             throw new Error(
+                 "Could not use your Cookie. Make sure that you copied correctly the Cookie with name __Secure-1PSID exactly. If you are sure your cookie is correct, you may also have reached your rate limit."
+             );
+@@ -91,7 +86,7 @@ class Bard {
+         try {
+             this.#verbose &&
+                 console.log("💻 Finding Google server destination");
+-            let response = await this.#fetch(
++            let response = await fetch(
+                 "https://content-push.googleapis.com/upload/",
+                 {
+                     method: "POST",
+@@ -103,13 +98,12 @@ class Bard {
+                         "Push-Id": "feeds/mcudyrk2a4khkz",
+                     },
+                     body: formBody,
+-                    credentials: "include",
+                 }
+             );
+ 
+             const uploadUrl = response.headers.get("X-Goog-Upload-URL");
+             this.#verbose && console.log("📤 Sending your image");
+-            response = await this.#fetch(uploadUrl, {
++            response = await fetch(uploadUrl, {
+                 method: "POST",
+                 headers: {
+                     "X-Goog-Upload-Command": "upload, finalize",
+@@ -117,7 +111,6 @@ class Bard {
+                     "X-Tenant-Id": "bard-storage",
+                 },
+                 body: buffer,
+-                credentials: "include",
+             });
+ 
+             const imageFileLocation = await response.text();
+@@ -221,11 +214,10 @@ class Bard {
+ 
+         this.#verbose && console.log("💭 Sending message to Bard");
+         // Send the fetch request
+-        const chatData = await this.#fetch(url.toString(), {
++        const chatData = await fetch(url.toString(), {
+             method: "POST",
+             headers: this.#headers,
+             body: formBody,
+-            credentials: "include",
+         })
+             .then((response) => {
+                 return response.text();

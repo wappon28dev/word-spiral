@@ -1,34 +1,30 @@
-import { askAI } from "lib/ai";
+import { askBardWithJson } from "lib/bard";
 import { createHono } from "lib/constant";
-import { extractJsonFromString } from "lib/extractor";
-
-type Res = {
-  words: string[];
-};
+import { z } from "zod";
 
 export const words = createHono().get("/", async (ctx) => {
-  const { response } = await askAI(ctx.env, [
-    {
-      role: "user",
-      content: `List five nouns in **Japanese** that are known to a child who is just learning to speak.
-      Never contain the same word or English word.
-      The response must be a JSON object that contains an array of five words.
-      {
-        "$schema": "http://json-schema.org/draft-07/schema#",
-        "type": "object",
-        "required": ["words"],
-        "properties": {
-          "words": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-          }
-        }
-      }
-      `,
-    },
-  ]);
-  console.log(response);
-  return ctx.jsonT(extractJsonFromString<Res>(response));
+  const prompt = `
+  日本語で, 言葉を覚えたての子供が知っている程度の語彙で, 名詞を5つ挙げてください.
+  同じ単語を含めないでください.  以下のような JSON 形式のみで応答してください.
+
+  \`\`\`json
+  {
+    "words": [
+      "単語1",
+      "単語2",
+      "単語3",
+      "単語4",
+      "単語5"
+    ]
+  }
+  \`\`\`
+  `;
+
+  const zRes = z.object({
+    words: z.array(z.string()),
+  });
+
+  const res = await askBardWithJson<z.infer<typeof zRes>>(ctx.env, prompt);
+
+  return ctx.jsonT(zRes.parse(res));
 });

@@ -1,7 +1,8 @@
 import { Hono } from "hono";
 
 export type ENV = {
-  AI: any;
+  BARD_API_KEY: string;
+  BARD_DEFAULT_CHAT_ID: string;
 };
 
 export type Variables = never;
