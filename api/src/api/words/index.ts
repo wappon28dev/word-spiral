@@ -25,6 +25,5 @@ export const words = createHono().get("/", async (ctx) => {
   });
 
   const res = await askBardWithJson<z.infer<typeof zRes>>(ctx.env, prompt);
-
-  return ctx.jsonT(zRes.parse(res));
+  return ctx.jsonT(zRes.parse(res.json));
 });

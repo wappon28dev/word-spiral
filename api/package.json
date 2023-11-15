@@ -4,7 +4,6 @@
   "type": "module",
   "version": "0.2.0",
   "scripts": {
-    "postinstall": "patch-package",
     "dev": "wrangler dev src/index.ts",
     "deploy": "wrangler deploy --minify src/index.ts",
     "lint": "eslint ./src",

@@ -1,10 +1,16 @@
 import Bard from "bard-ai";
 import { extractJsonFromString } from "./extractor";
 import { type ENV } from "./constant";
+import { type z } from "zod";
+import { type zChatIds } from "types/bard";
 
 export async function askBard(env: ENV, prompt: string): Promise<string> {
   const bard = new Bard(env.BARD_API_KEY);
-  const chat = bard.createChat();
+
+  const chatIds: z.infer<typeof zChatIds> = JSON.parse(
+    env.BARD_DEFAULT_CHAT_IDS
+  );
+  const chat = bard.createChat(chatIds);
   const answer = (await chat.ask(prompt)) as string;
   console.log(chat.export());
   return answer;
