@@ -1,8 +1,12 @@
 import { atom } from "jotai";
 import { type ActionStatus } from "@/types/atom/data";
+import { type useWords } from "@/hooks/useWords";
 
-export const atomAPIurlRoom = atom<string>("http://localhost:8787");
-export const atomAPIurlWord2vec = atom<string>("http://localhost:8787");
-export const atomRoomId = atom<number | undefined>(undefined);
-export const atomUserId = atom<number | undefined>(undefined);
+const _isProd = process.env.NODE_ENV === "production";
+export const atomApiUrl = atom<string>(
+  _isProd ? "https://api.word-spiral.wappon28.dev" : "http://localhost:8787"
+);
 export const atomActionStatus = atom<ActionStatus | undefined>(undefined);
+
+type Words = Awaited<ReturnType<ReturnType<typeof useWords>["getWords"]>>;
+export const atomWords = atom<Words | undefined>(undefined);

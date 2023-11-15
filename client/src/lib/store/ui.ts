@@ -1,6 +1,7 @@
 import { nprogress } from "@mantine/nprogress";
 import { atom, type useSetAtom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
+import { type Lang } from "types/lang";
 import { type CharacterType } from "@/types/atom/ui";
 import { getLocalStorageKey } from "../local-storage";
 
@@ -24,4 +25,9 @@ export function loadingComplete(
 export const atomCharacterType = atomWithStorage<CharacterType>(
   getLocalStorageKey("characterType"),
   "ruby"
+);
+
+export const atomLang = atomWithStorage<Lang>(
+  getLocalStorageKey("lang"),
+  "ja-jp"
 );

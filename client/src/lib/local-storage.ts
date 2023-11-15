@@ -1,3 +1,4 @@
+import { type Lang } from "types/lang";
 import { siteId } from "@/assets/info";
 import { type CharacterType } from "@/types/atom/ui";
 
@@ -5,6 +6,7 @@ export const localStorageVersion = 1;
 
 export type LocalStorageScheme = {
   characterType: CharacterType;
+  lang: Lang;
 };
 
 export function getLocalStorageKey<T extends keyof LocalStorageScheme>(

@@ -7,6 +7,7 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true, // FIXME: workaround
   },
+  reactStrictMode: false,
 };
 
 export default nextConfig;
