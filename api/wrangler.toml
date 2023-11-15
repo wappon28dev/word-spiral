@@ -1,4 +1,4 @@
-name = "api-rooms"
+name = "api"
 compatibility_date = "2023-01-01"
 
 [[d1_databases]]

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { type InferResponseType, hc, type InferRequestType } from "hono/client";
-import { type AppType } from "@api-rooms";
+import { type AppType } from "@api";
 import { type HonoClient } from "@/types/client";
 
 const defaultUrl = "http://localhost:8787";

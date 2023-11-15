@@ -116,60 +116,6 @@ export const rooms = createHono()
     }
   )
 
-  .post(
-    ":id/data/item/notify",
-    zValidator(
-      "json",
-      z.object({
-        userId: z.number(),
-      })
-    ),
-    async (ctx) => {
-      console.log("notify");
-      const roomId = Number(ctx.req.param("id"));
-      const userId = Number(ctx.req.valid("json").userId);
-
-      const userExists = await new UserDB(ctx.env.ROOMS_DB, userId).exists();
-
-      if (!userExists) {
-        throw new HTTPException(404, {
-          message: "User not found",
-        });
-      }
-
-      const room = new RoomDB(ctx.env.ROOMS_DB, roomId);
-
-      const { userIdList } = await room.get();
-      const userIndex = userIdList.indexOf(userId);
-
-      if (userIndex === -1) {
-        throw new HTTPException(404, {
-          message: "User not found in room",
-        });
-      }
-
-      let requestTimes = 0;
-
-      return ctx.streamText(async (stream) => {
-        while (requestTimes < 30) {
-          const { data } = await room.get();
-          const { items } = data;
-
-          if (items.length % userIdList.length === userIndex) {
-            console.log(`#${requestTimes} It is your turn`);
-            stream.write("ok");
-            break;
-          }
-
-          console.log(`#${requestTimes} Waiting for other players`);
-          await stream.sleep(2000);
-
-          requestTimes++;
-        }
-      });
-    }
-  )
-
   .delete("/:id", async (ctx) => {
     const roomId = Number(ctx.req.param("id"));
     await new RoomDB(ctx.env.ROOMS_DB, roomId).destroy();

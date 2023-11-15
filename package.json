@@ -4,18 +4,16 @@
   "private": true,
   "scripts": {
     "prepare": "yarn workspace @word-spiral/client prepare",
-    "dev:api-rooms": "yarn workspace @word-spiral/api-rooms dev",
-    "dev:api-word2vec": "yarn workspace @word-spiral/api-word2vec dev",
+    "dev:api": "yarn workspace @word-spiral/api dev",
     "dev:client": "yarn workspace @word-spiral/client dev",
-    "deploy:api-rooms": "yarn workspace @word-spiral/api-rooms deploy",
+    "deploy:api": "yarn workspace @word-spiral/api deploy",
     "build": "yarn workspace @word-spiral/client build",
-    "lint": "yarn workspace @word-spiral/client lint & yarn workspace @word-spiral/api-rooms lint",
+    "lint": "yarn workspace @word-spiral/client lint & yarn workspace @word-spiral/api lint",
     "fmt": "prettier --write ."
   },
   "workspaces": {
     "packages": [
-      "api-rooms",
-      "api-word2vec",
+      "api",
       "client"
     ]
   }

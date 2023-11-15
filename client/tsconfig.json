@@ -22,8 +22,8 @@
       "@/*": ["./src/*"],
       "panda/*": ["./panda/*"],
       "package": ["./package.json"],
-      "@api-rooms": ["../api-rooms/src/index.ts"],
-      "*": ["../api-rooms/src/*"]
+      "@api": ["../api/src/index.ts"],
+      "*": ["../api/src/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

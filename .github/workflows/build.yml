@@ -58,7 +58,7 @@ jobs:
               target_url: "${{ steps.cloudflare_pages_deploy.outputs.url }}",
             });
 
-  build-api-rooms:
+  build-api:
     runs-on: ubuntu-latest
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     steps:
@@ -83,4 +83,4 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN_WORKERS }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: "deploy --minify src/index.ts"
-          workingDirectory: ./api-rooms
+          workingDirectory: ./api

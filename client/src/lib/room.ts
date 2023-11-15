@@ -54,39 +54,6 @@ export class Room {
     });
   }
 
-  public async awaitUserTurns(): Promise<void> {
-    const longPolling = async (): Promise<boolean> => {
-      // stream
-      const res = await this.api.v1.rooms[":id"].data.item.notify.$post({
-        param: { id: String(this.roomId) },
-        json: { userId: this.userId },
-      });
-
-      console.log("awaiting user turns...");
-      const text = await res.text();
-      return text === "ok";
-    };
-
-    let retryCount = 0;
-    let isSucceeded = false;
-
-    while (retryCount < 20) {
-      console.log(`#${retryCount} long polling...`);
-      // eslint-disable-next-line no-await-in-loop
-      if (await longPolling()) {
-        console.log("It's your turn!");
-        isSucceeded = true;
-        break;
-      }
-
-      retryCount += 1;
-    }
-
-    if (!isSucceeded) {
-      throw new Error("long polling failed");
-    }
-  }
-
   /// NOTE: userId と roomId を undefined にするのを忘れないこと～
   public async destroy(): Promise<void> {
     await this.api.v1.rooms[":id"].$delete({

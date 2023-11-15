@@ -1,5 +1,5 @@
 {
-  "name": "@word-spiral/api-rooms",
+  "name": "@word-spiral/api",
   "private": true,
   "type": "module",
   "version": "0.2.0",
