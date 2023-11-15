@@ -84,3 +84,6 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: "deploy --minify src/index.ts"
           workingDirectory: ./api
+          secrets: |
+            BARD_API_KEY
+            BARD_DEFAULT_CHAT_IDS

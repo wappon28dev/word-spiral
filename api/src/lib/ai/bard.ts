@@ -1,6 +1,6 @@
 import Bard from "bard-ai";
-import { extractJsonFromString } from "./extractor";
-import { type ENV } from "./constant";
+import { extractJsonFromString } from "../extractor";
+import { type ENV } from "../constant";
 import { type z } from "zod";
 import { type zChatIds } from "types/bard";
 
@@ -12,7 +12,6 @@ export async function askBard(env: ENV, prompt: string): Promise<string> {
   );
   const chat = bard.createChat(chatIds);
   const answer = (await chat.ask(prompt)) as string;
-  console.log(chat.export());
   return answer;
 }
 

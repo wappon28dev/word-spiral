@@ -1,29 +1,73 @@
-import { askBardWithJson } from "lib/bard";
+import { zValidator } from "@hono/zod-validator";
+import { askBardWithJson } from "lib/ai/bard";
 import { createHono } from "lib/constant";
+import { prompt } from "lib/ai/prompt";
+import { zLang } from "types/lang";
 import { z } from "zod";
 
-export const words = createHono().get("/", async (ctx) => {
-  const prompt = `
-  日本語で, 言葉を覚えたての子供が知っている程度の語彙で, 名詞を5つ挙げてください.
-  同じ単語を含めないでください.  以下のような JSON 形式のみで応答してください.
+export const words = createHono()
+  .get(
+    "/:lang",
+    zValidator(
+      "param",
+      z.object({
+        lang: zLang,
+      })
+    ),
+    async (ctx) => {
+      const { lang } = ctx.req.valid("param");
+      const req = prompt.index[lang];
 
-  \`\`\`json
-  {
-    "words": [
-      "単語1",
-      "単語2",
-      "単語3",
-      "単語4",
-      "単語5"
-    ]
-  }
-  \`\`\`
-  `;
+      const zRes = z.object({
+        words: z
+          .array(
+            z.object({
+              word: z.string(),
+              related: z.array(z.string()).length(5),
+              unrelated: z.array(z.string()).length(5),
+            })
+          )
+          .length(5),
+      });
+      const res = await askBardWithJson<z.infer<typeof zRes>>(ctx.env, req);
 
-  const zRes = z.object({
-    words: z.array(z.string()),
-  });
+      return ctx.jsonT(zRes.parse(res.json));
+    }
+  )
 
-  const res = await askBardWithJson<z.infer<typeof zRes>>(ctx.env, prompt);
-  return ctx.jsonT(zRes.parse(res.json));
-});
+  .post(
+    "/:lang/predict",
+    zValidator(
+      "param",
+      z.object({
+        lang: zLang,
+      })
+    ),
+    zValidator(
+      "json",
+      z.object({
+        words: z.object({
+          related: z.array(z.string()),
+        }),
+      })
+    ),
+    async (ctx) => {
+      const {
+        words: { related: relatedWords },
+      } = ctx.req.valid("json");
+      const { lang } = ctx.req.valid("param");
+      const req = prompt.predict[lang].replace(
+        "$a$",
+        `[${relatedWords.join(", ")}]`
+      );
+
+      const zRes = z.object({
+        words: z.object({
+          predicted: z.string(),
+        }),
+      });
+      const res = await askBardWithJson<z.infer<typeof zRes>>(ctx.env, req);
+
+      return ctx.jsonT(zRes.parse(res.json));
+    }
+  );
