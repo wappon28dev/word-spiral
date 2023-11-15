@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 
 export type ENV = {
-  ROOMS_DB: D1Database;
+  AI: any;
 };
 
 export type Variables = never;

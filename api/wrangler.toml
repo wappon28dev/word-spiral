@@ -1,7 +1,5 @@
 name = "api"
 compatibility_date = "2023-01-01"
 
-[[d1_databases]]
-binding = "ROOMS_DB"
-database_name = "@word-spiral/rooms-db"
-database_id = "5918d925-9e1f-4179-8bc1-24f475caf797"
+[ai]
+binding = "AI"

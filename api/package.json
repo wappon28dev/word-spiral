@@ -5,13 +5,13 @@
   "version": "0.2.0",
   "scripts": {
     "dev": "wrangler dev src/index.ts",
-    "predev": "wrangler d1 execute @word-spiral/rooms-db --local --file=./db/schema.sql",
     "deploy": "wrangler deploy --minify src/index.ts",
     "lint": "eslint ./src",
     "lint:fix": "eslint --fix ./src",
     "fmt": "prettier --write ./src"
   },
   "dependencies": {
+    "@cloudflare/ai": "^1.0.28",
     "@hono/zod-validator": "^0.1.11",
     "hono": "^3.9.2",
     "typescript": "^5.2.2",

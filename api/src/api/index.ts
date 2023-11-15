@@ -1,5 +1,5 @@
 import { createHono } from "lib/constant";
 import { cors } from "hono/cors";
-import { rooms } from "./rooms";
+import { words } from "./words";
 
-export const v1 = createHono().use("*", cors()).route("/rooms", rooms);
+export const v1 = createHono().use("*", cors()).route("/words", words);
