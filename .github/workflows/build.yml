@@ -87,3 +87,6 @@ jobs:
           secrets: |
             BARD_API_KEY
             BARD_DEFAULT_CHAT_IDS
+        env:
+          BARD_API_KEY: ${{ secrets.BARD_API_KEY }}
+          BARD_DEFAULT_CHAT_IDS: ${{ secrets.BARD_DEFAULT_CHAT_IDS }}
