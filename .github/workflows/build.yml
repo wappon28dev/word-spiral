@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-client:
+  build:
     runs-on: ubuntu-latest
     environment:
       name: ${{ (github.ref == 'refs/heads/main' && 'production') || 'preview' }}
@@ -39,7 +39,7 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN_PAGES }}
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
           projectName: word-spiral
-          directory: ./client/out
+          directory: ./out
         env:
           NODE_VERSION: 20
 
@@ -57,30 +57,3 @@ jobs:
               sha,
               target_url: "${{ steps.cloudflare_pages_deploy.outputs.url }}",
             });
-
-  build-api:
-    runs-on: ubuntu-latest
-    if: "!contains(github.event.head_commit.message, '[skip ci]')"
-    steps:
-      - name: 📥 Checkout repository
-        uses: actions/checkout@v3
-
-      - name: 📸 Calculate commit hash
-        id: sha
-        uses: pr-mpt/actions-commit-hash@v2
-
-      - name: 🔨 Prepare Node environment
-        uses: actions/setup-node@v3
-        with:
-          node-version: 20
-
-      - name: 🎉 Install project dependencies
-        run: yarn
-
-      - name: 🚀 Deploy workers
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN_WORKERS }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: "deploy --minify src/index.ts"
-          workingDirectory: ./api
