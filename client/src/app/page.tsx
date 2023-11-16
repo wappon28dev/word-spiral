@@ -12,9 +12,11 @@ import { useWords } from "@/hooks/useWords";
 import { requestWithActionStatus } from "@/lib/request";
 import { atomActionStatus, atomWords } from "@/lib/store/data";
 import { type ActionStatus } from "@/types/atom/data";
+import useViewTransitionRouter from "@/hooks/useViewTransitionRouter";
 
 export default function Page(): ReactElement {
   const { getWords } = useWords();
+  const router = useViewTransitionRouter();
 
   const [actionStatus, setActionStatus] = useAtom(atomActionStatus);
 
@@ -104,6 +106,9 @@ export default function Page(): ReactElement {
           <Button
             disabled={!isLoading && words == null}
             loading={isLoading}
+            onClick={() => {
+              router.push("/play");
+            }}
             rightIcon={<Icon path={mdiArrowRight} size={1} />}
             size="lg"
           >
