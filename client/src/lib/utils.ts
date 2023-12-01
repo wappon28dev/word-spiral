@@ -35,6 +35,8 @@ export type PartialRequire<O, K extends keyof O> = {
   [P in K]-?: O[P];
 } & O;
 
-export type RequireOne<T, K extends keyof T = keyof T> = K extends keyof T
-  ? PartialRequire<T, K>
+export type ElementType<T extends unknown[]> = T extends Array<infer U>
+  ? U
   : never;
+
+export type OmitStrict<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;

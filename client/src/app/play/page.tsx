@@ -1,10 +1,12 @@
 "use client";
 
-import { useEffect, type ReactElement } from "react";
+import { useEffect, type ReactElement, type ReactNode, useState } from "react";
 import { styled as p } from "panda/jsx";
 import Icon from "@mdi/react";
 import { mdiChevronRight } from "@mdi/js";
 import useViewTransitionRouter from "@/hooks/useViewTransitionRouter";
+import { Button } from "@/components/Button";
+import { WordSelect } from "@/components/WordSelect";
 
 const words = {
   words: [
@@ -37,8 +39,10 @@ const words = {
 } as const;
 
 export default function PagePlay(): ReactElement {
-  // const words = useAtomValue(atomWords);
+  // const _words = useAtomValue(atomWords);
   const router = useViewTransitionRouter();
+
+  const [selectedWordIdx, setSelectedWordIdx] = useState<number>();
 
   useEffect(() => {
     if (words == null) {
@@ -46,6 +50,7 @@ export default function PagePlay(): ReactElement {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   return (
     <p.div h="100%" w="100%">
       <p.main display="flex" h="100%" w="100%">
@@ -61,39 +66,27 @@ export default function PagePlay(): ReactElement {
             maxW="400px"
             overflowY="auto"
           >
-            {words.words.map((entry) => (
-              <p.p
-                key={entry.word}
-                _hover={{
-                  cursor: "pointer",
-                  bg: "gray.200",
-                  "& > span:last-child": {
-                    transform: "translateX(3px)",
-                  },
+            {words.words.map(({ word }, idx) => (
+              <Button
+                key={word}
+                onClick={() => {
+                  setSelectedWordIdx(idx);
                 }}
-                bg="white"
-                border="2px solid gray"
-                display="flex"
-                fontSize="xl"
-                justifyContent="space-between"
-                m="0 auto"
-                p="20px"
-                rounded="20px"
-                textAlign="center"
-                transition="all 0.2s ease-in-out"
-                w="100%"
               >
-                <p.span m="0 auto" textAlign="center">
-                  {entry.word}
-                </p.span>
-                <p.span transition="all 0.2s ease-in-out">
-                  <Icon path={mdiChevronRight} size={1} />
-                </p.span>
-              </p.p>
+                {word}
+              </Button>
             ))}
           </p.div>
         </p.div>
-        <p.div bg="red.100" flex="5" />
+        <p.div bg="red.100" flex="5">
+          <p.h1 fontSize="3xl" fontWeight="900" p="20px" textAlign="center">
+            単語を選択
+          </p.h1>
+          {selectedWordIdx != null && words.words[selectedWordIdx].word}
+          {selectedWordIdx != null && (
+            <WordSelect wordData={words.words[selectedWordIdx]} />
+          )}
+        </p.div>
       </p.main>
     </p.div>
   );

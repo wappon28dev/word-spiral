@@ -8,5 +8,7 @@ export const atomApiUrl = atom<string>(
 );
 export const atomActionStatus = atom<ActionStatus | undefined>(undefined);
 
-type Words = Awaited<ReturnType<ReturnType<typeof useWords>["getWords"]>>;
+export type Words = Awaited<
+  ReturnType<ReturnType<typeof useWords>["getWords"]>
+>;
 export const atomWords = atom<Words | undefined>(undefined);
