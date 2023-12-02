@@ -8,10 +8,12 @@ import { token } from "panda/tokens";
 export function CheckButton({
   onClick,
   isChecked,
+  emoji,
   children,
 }: {
   isChecked: boolean;
   onClick?: () => void;
+  emoji: string;
   children: ReactNode;
 }): ReactElement {
   return (
@@ -40,6 +42,7 @@ export function CheckButton({
       userSelect="none"
       w="100%"
     >
+      <p.span>{emoji}</p.span>
       <p.span m="0 auto" textAlign="center">
         {children}
       </p.span>

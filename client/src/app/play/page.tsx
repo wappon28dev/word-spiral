@@ -28,13 +28,13 @@ export default function PagePlay(): ReactElement {
         h="100%"
         w="100%"
       >
-        <p.div bg="blue.100" flex="3">
+        <p.div bg="blue.100">
           <TargetWordSelect />
         </p.div>
-        <p.div bg="red.100" flex="5">
+        <p.div bg="red.100">
           <PredictWordSelect />
         </p.div>
-        <p.div>
+        <p.div bg="green.100">
           <WordPredict />
         </p.div>
       </p.main>

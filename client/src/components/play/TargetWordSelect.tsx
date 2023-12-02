@@ -29,15 +29,15 @@ export function TargetWordSelect(): ReactElement {
       >
         {words.words.map((entry, idx) => (
           <Button
-            key={entry.word}
+            key={entry.target.word}
             onClick={() => {
               setWordSelection({
-                target: entry,
+                data: entry,
                 predict: [],
               });
             }}
           >
-            {entry.word}
+            {entry.target.word}
           </Button>
         ))}
       </p.div>

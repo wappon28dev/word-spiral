@@ -19,7 +19,7 @@ export type WordsSelection = Parameters<
 
 export const atomWordsSelection = atom<
   | {
-      target: Words["words"][number];
+      data: Words["words"][number];
       predict: WordsSelection;
     }
   | undefined

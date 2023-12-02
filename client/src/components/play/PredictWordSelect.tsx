@@ -4,54 +4,65 @@ import { Button } from "@mantine/core";
 import Icon from "@mdi/react";
 import { mdiArrowRight } from "@mdi/js";
 import { useAtom, useAtomValue } from "jotai";
+import { type WordData } from "types/word";
 import { atomWords, atomWordsSelection } from "@/lib/store/data";
 import { CheckButton } from "../CheckButton";
 
 export function PredictWordSelect(): ReactElement {
   const word = useAtomValue(atomWords);
   const [wordSelection, setWordSelection] = useAtom(atomWordsSelection);
-  const [wordDataArr, setWordDataArr] = useState<string[]>([]);
+  const [wordDataArr, setWordDataArr] = useState<WordData[]>([]);
 
   const range = 9;
 
   useEffect(() => {
-    if (word == null || wordSelection?.target == null) return;
-    const { related, unrelated } = wordSelection.target;
+    if (word == null || wordSelection?.data == null) return;
+    const { related, unrelated } = wordSelection.data;
     const arr = [...related, ...unrelated];
     setWordDataArr(arr.sort(() => Math.random() - 0.5).slice(0, range));
-  }, [word, wordSelection?.target]);
+  }, [word, wordSelection?.data]);
 
   if (wordSelection == null) {
     return <p.div />;
   }
 
-  const { target, predict } = wordSelection;
+  const { data: target, predict } = wordSelection;
 
   return (
-    <p.div p="20px">
-      <p.div display="grid" gap="20px" gridTemplateColumns="repeat(3, 1fr)">
-        {wordDataArr.map((_word) => (
+    <>
+      <p.h2 fontSize="3xl" fontWeight="900" p="20px" textAlign="center">
+        目標単語
+      </p.h2>
+
+      <p.div
+        display="grid"
+        gap="10px"
+        gridTemplateColumns="repeat(3, 1fr)"
+        p="10px"
+      >
+        {wordDataArr.map((_data) => (
           <CheckButton
-            key={_word}
-            isChecked={predict.includes(_word)}
+            key={_data.word}
+            emoji={_data.emoji}
+            isChecked={predict.includes(_data.word)}
             onClick={() => {
               setWordSelection(
                 (() => {
-                  if (predict.includes(_word)) {
+                  if (predict.includes(_data.word)) {
                     return {
-                      target,
-                      predict: predict.filter((w) => w !== _word),
+                      data: target,
+                      predict: predict.filter((w) => w !== _data.word),
                     };
                   }
                   return {
-                    target,
-                    predict: [...predict, _word],
+                    data: target,
+                    predict: [...predict, _data.word],
                   };
                 })()
               );
             }}
           >
-            {_word}
+            {_data.word}
           </CheckButton>
         ))}
       </p.div>
@@ -60,6 +71,6 @@ export function PredictWordSelect(): ReactElement {
           続ける
         </Button>
       </p.div>
-    </p.div>
+    </>
   );
 }

@@ -4,6 +4,7 @@ import { createHono } from "lib/constant";
 import { prompt } from "lib/ai/prompt";
 import { zLang } from "types/lang";
 import { z } from "zod";
+import { _zWordData } from "types/word";
 
 export const words = createHono()
   .get(
@@ -22,12 +23,12 @@ export const words = createHono()
         words: z
           .array(
             z.object({
-              word: z.string(),
-              related: z.array(z.string()).length(5),
-              unrelated: z.array(z.string()).length(5),
+              target: _zWordData,
+              related: z.array(_zWordData).length(5),
+              unrelated: z.array(_zWordData).length(5),
             })
           )
-          .length(5),
+          .length(3),
       });
       const res = await askBardWithJson<z.infer<typeof zRes>>(ctx.env, req);
 
@@ -63,7 +64,7 @@ export const words = createHono()
 
       const zRes = z.object({
         words: z.object({
-          predicted: z.string(),
+          predicted: _zWordData,
         }),
       });
       const res = await askBardWithJson<z.infer<typeof zRes>>(ctx.env, req);
