@@ -12,3 +12,15 @@ export type Words = Awaited<
   ReturnType<ReturnType<typeof useWords>["getWords"]>
 >;
 export const atomWords = atom<Words | undefined>(undefined);
+
+export type WordsSelection = Parameters<
+  ReturnType<typeof useWords>["predict"]
+>[0];
+
+export const atomWordsSelection = atom<
+  | {
+      target: Words["words"][number];
+      predict: WordsSelection;
+    }
+  | undefined
+>(undefined);

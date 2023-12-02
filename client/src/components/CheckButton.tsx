@@ -16,6 +16,9 @@ export function CheckButton({
 }): ReactElement {
   return (
     <p.p
+      _active={{
+        transform: "translateY(1px)",
+      }}
       _hover={{
         cursor: "pointer",
         bg: "gray.200",
@@ -34,7 +37,7 @@ export function CheckButton({
         color: token(isChecked ? "colors.white" : "colors.black"),
       }}
       textAlign="center"
-      transition="transform 0.2s ease-in-out, background 0.2s ease-in-out, color 0.2s ease-in-out"
+      userSelect="none"
       w="100%"
     >
       <p.span m="0 auto" textAlign="center">

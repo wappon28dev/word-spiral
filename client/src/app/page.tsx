@@ -15,7 +15,7 @@ import { type ActionStatus } from "@/types/atom/data";
 import useViewTransitionRouter from "@/hooks/useViewTransitionRouter";
 
 export default function Page(): ReactElement {
-  const { getWords } = useWords();
+  const { getWords, getWordsMock } = useWords();
   const router = useViewTransitionRouter();
 
   const [actionStatus, setActionStatus] = useAtom(atomActionStatus);
@@ -62,6 +62,15 @@ export default function Page(): ReactElement {
     const _isProd = process.env.NODE_ENV === "production";
     if (_isProd) {
       void requestWords();
+    } else {
+      getWordsMock().then((m) => {
+        setActionStatus({
+          from: "getWordsMock",
+          message: "success",
+          status: "success",
+        });
+        setWords(m);
+      });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

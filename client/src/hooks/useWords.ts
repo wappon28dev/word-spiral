@@ -24,6 +24,44 @@ export function useWords() {
     return res.json();
   }
 
+  async function getWordsMock(): Promise<Awaited<ReturnType<typeof getWords>>> {
+    return {
+      words: [
+        {
+          word: "あかちゃん",
+          related: [
+            "ママ",
+            "パパ",
+            "おじいちゃん",
+            "おばあちゃん",
+            "お兄ちゃん",
+          ],
+          unrelated: ["ボール", "犬", "猫", "りんご", "本"],
+        },
+        {
+          word: "ボール",
+          related: ["あかちゃん", "公園", "遊び", "蹴る", "投げる"],
+          unrelated: ["ママ", "パパ", "おじいちゃん", "おばあちゃん", "りんご"],
+        },
+        {
+          word: "犬",
+          related: ["ボール", "散歩", "吠える", "尻尾", "毛"],
+          unrelated: ["ママ", "パパ", "おじいちゃん", "おばあちゃん", "りんご"],
+        },
+        {
+          word: "猫",
+          related: ["ボール", "おもちゃ", "すねる", "毛", "ひげ"],
+          unrelated: ["ママ", "パパ", "おじいちゃん", "おばあちゃん", "りんご"],
+        },
+        {
+          word: "りんご",
+          related: ["食べ物", "甘い", "酸っぱい", "丸い", "赤い"],
+          unrelated: ["ママ", "パパ", "おじいちゃん", "おばあちゃん", "犬"],
+        },
+      ],
+    } as const;
+  }
+
   const getPredict = client.v1.words[":lang"].predict.$post;
   async function predict(
     relatedWords: string[]
@@ -42,6 +80,7 @@ export function useWords() {
 
   return {
     getWords,
+    getWordsMock,
     predict,
   };
 }
