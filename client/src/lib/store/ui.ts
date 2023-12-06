@@ -29,5 +29,5 @@ export const atomCharacterType = atomWithStorage<CharacterType>(
 
 export const atomLang = atomWithStorage<Lang>(
   getLocalStorageKey("lang"),
-  "ja-jp"
+  "en-us"
 );

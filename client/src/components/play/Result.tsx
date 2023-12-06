@@ -35,6 +35,7 @@ export default function Result(): ReactElement {
           predict
         </Button>
         <p.div>{predictedWordList?.words.predicted.word ?? ""}</p.div>
+        <p.div>{predictedWordList?.words.predicted.emoji ?? ""}</p.div>
       </p.div>
     </>
   );

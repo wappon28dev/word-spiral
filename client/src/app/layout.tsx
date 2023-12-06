@@ -1,5 +1,6 @@
 import { type ReactElement } from "react";
 import { styled as p } from "panda/jsx";
+import { css } from "panda/css";
 import PageInit from "@/components/PageInit";
 import "./global.css";
 
@@ -7,6 +8,7 @@ import "./global.css";
 import "@fontsource/zen-maru-gothic/500.css";
 import "@fontsource/zen-maru-gothic/700.css";
 import "@fontsource/zen-maru-gothic/900.css";
+import "@fontsource/noto-color-emoji/emoji-400.css";
 import { siteName, description, url } from "@/assets/info";
 
 export const metadata = {
@@ -36,6 +38,11 @@ export default function RootLayout({
   return (
     <html lang="ja" suppressHydrationWarning>
       <p.body
+        className={css({
+          "& .emoji": {
+            fontFamily: "Noto Color Emoji",
+          },
+        })}
         fontFamily="Zen Maru Gothic"
         h={["100vh", "100dvh"]}
         wordBreak="keep-all"

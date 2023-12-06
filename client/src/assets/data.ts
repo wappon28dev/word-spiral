@@ -2,151 +2,151 @@ export const wordData = {
   words: [
     {
       target: {
-        emoji: "🪴",
-        word: "花",
+        emoji: "🐵",
+        word: "さる",
       },
       related: [
         {
-          emoji: "🌼",
-          word: "桜",
+          emoji: "🐒",
+          word: "いぬ",
         },
         {
-          emoji: "🌻",
-          word: "ひまわり",
+          emoji: "🐨",
+          word: "くま",
         },
         {
-          emoji: "🌹",
-          word: "バラ",
+          emoji: "🐈",
+          word: "ねこ",
         },
         {
-          emoji: "🌺",
-          word: "ひなげし",
-        },
-        {
-          emoji: "🌷",
-          word: "チューリップ",
-        },
-      ],
-      unrelated: [
-        {
-          emoji: "🐭",
-          word: "ねずみ",
-        },
-        {
-          emoji: "🐉",
-          word: "竜",
+          emoji: "🐼",
+          word: "パンダ",
         },
         {
           emoji: "🐧",
           word: "ペンギン",
         },
+      ],
+      unrelated: [
         {
-          emoji: "🐨",
-          word: "コアラ",
+          emoji: "🚢",
+          word: "船",
         },
         {
-          emoji: "🐵",
-          word: "猿",
+          emoji: "🚄",
+          word: "電車",
+        },
+        {
+          emoji: "🚍",
+          word: "バス",
+        },
+        {
+          emoji: "🚖",
+          word: "タクシー",
+        },
+        {
+          emoji: "✈️",
+          word: "飛行機",
         },
       ],
     },
     {
       target: {
-        emoji: "🐹",
-        word: "ねずみ",
+        emoji: "🍏",
+        word: "りんご",
       },
       related: [
         {
-          emoji: "🐁",
-          word: "ハツカネズミ",
+          emoji: "🍐",
+          word: "洋ナシ",
         },
         {
-          emoji: "🐿",
-          word: "リス",
+          emoji: "🍊",
+          word: "みかん",
         },
         {
-          emoji: "🐀",
-          word: "モグラ",
+          emoji: "🍋",
+          word: "レモン",
         },
         {
-          emoji: "🐮",
-          word: "牛",
+          emoji: "🍒",
+          word: "さくらんぼ",
         },
         {
-          emoji: "🐗",
-          word: "猪",
+          emoji: "🍓",
+          word: "いちご",
         },
       ],
       unrelated: [
         {
-          emoji: "🪴",
-          word: "花",
+          emoji: "🐧",
+          word: "ペンギン",
         },
         {
-          emoji: "🌻",
-          word: "ひまわり",
+          emoji: "🚢",
+          word: "船",
         },
         {
-          emoji: "🌹",
-          word: "バラ",
+          emoji: "🚄",
+          word: "電車",
         },
         {
-          emoji: "🌺",
-          word: "ひなげし",
+          emoji: "🚍",
+          word: "バス",
         },
         {
-          emoji: "🌷",
-          word: "チューリップ",
+          emoji: "🚖",
+          word: "タクシー",
         },
       ],
     },
     {
       target: {
-        emoji: "🐄",
-        word: "牛",
+        emoji: "⚽️",
+        word: "ボール",
       },
       related: [
         {
-          emoji: "🐃",
-          word: "水牛",
+          emoji: "🏀",
+          word: "バスケットボール",
         },
         {
-          emoji: "🐮",
-          word: "乳牛",
+          emoji: "🏈",
+          word: "アメフト",
         },
         {
-          emoji: "🐂",
-          word: "牡牛",
+          emoji: "⚾️",
+          word: "野球",
         },
         {
-          emoji: "🐴",
-          word: "馬",
+          emoji: "🎾",
+          word: "テニス",
         },
         {
-          emoji: "🐏",
-          word: "羊",
+          emoji: "🏐",
+          word: "バレーボール",
         },
       ],
       unrelated: [
         {
-          emoji: "🪴",
-          word: "花",
+          emoji: "🐧",
+          word: "ペンギン",
         },
         {
-          emoji: "🌻",
-          word: "ひまわり",
+          emoji: "🚢",
+          word: "船",
         },
         {
-          emoji: "🌹",
-          word: "バラ",
+          emoji: "🚄",
+          word: "電車",
         },
         {
-          emoji: "🌺",
-          word: "ひなげし",
+          emoji: "🚍",
+          word: "バス",
         },
         {
-          emoji: "🌷",
-          word: "チューリップ",
+          emoji: "🚖",
+          word: "タクシー",
         },
       ],
     },
