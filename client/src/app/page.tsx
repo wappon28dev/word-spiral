@@ -2,39 +2,24 @@
 
 import { useState, type ReactElement, useEffect } from "react";
 import { styled as p } from "panda/jsx";
-import { useAtom } from "jotai";
-import { Button, Divider } from "@mantine/core";
+import { useAtom, useSetAtom } from "jotai";
+import { Button } from "@mantine/core";
 import Icon from "@mdi/react";
 import { mdiArrowRight } from "@mdi/js";
-import { type PropertyValue } from "panda/types/prop-type";
-import { type Token, token } from "panda/tokens";
 import { useWords } from "@/hooks/useWords";
 import { requestWithActionStatus } from "@/lib/request";
 import { atomActionStatus, atomWords } from "@/lib/store/data";
-import { type ActionStatus } from "@/types/atom/data";
 import useViewTransitionRouter from "@/hooks/useViewTransitionRouter";
+import { Status } from "@/components/Status";
 
 export default function Page(): ReactElement {
   const { getWords, getWordsMock } = useWords();
   const router = useViewTransitionRouter();
 
-  const [actionStatus, setActionStatus] = useAtom(atomActionStatus);
+  const setActionStatus = useSetAtom(atomActionStatus);
 
   const [words, setWords] = useAtom(atomWords);
   const [isLoading, setIsLoading] = useState(false);
-
-  const color: Record<ActionStatus["status"], PropertyValue<"color">> = {
-    success: "green.500",
-    warning: "yellow.900",
-    error: "red.500",
-    loading: "blue.500",
-  } as const;
-
-  function getColorToken(): string {
-    if (actionStatus == null) return "colors.black";
-    const colors = `colors.${color[actionStatus.status]}` as Token;
-    return token.var(colors);
-  }
 
   async function requestWords(): Promise<void> {
     await requestWithActionStatus({
@@ -126,23 +111,7 @@ export default function Page(): ReactElement {
         </p.div>
       </p.article>
       <p.footer p="20px">
-        <Divider size="sm" />
-        <p.div>
-          {actionStatus != null ? (
-            <>
-              <p.span color="gray.400">{actionStatus.from}:&nbsp;</p.span>
-              <p.span
-                style={{
-                  color: getColorToken(),
-                }}
-              >
-                {actionStatus.message}
-              </p.span>
-            </>
-          ) : (
-            <p.p color="green.500">READY</p.p>
-          )}
-        </p.div>
+        <Status />
       </p.footer>
     </p.main>
   );

@@ -1,4 +1,5 @@
 import { atom } from "jotai";
+import { type WordData } from "types/word";
 import { type ActionStatus } from "@/types/atom/data";
 import { type useWords } from "@/hooks/useWords";
 
@@ -13,14 +14,10 @@ export type Words = Awaited<
 >;
 export const atomWords = atom<Words | undefined>(undefined);
 
-export type WordsSelection = Parameters<
-  ReturnType<typeof useWords>["predict"]
->[0];
-
 export const atomWordsSelection = atom<
   | {
       data: Words["words"][number];
-      predict: WordsSelection;
+      predict: WordData[];
     }
   | undefined
 >(undefined);

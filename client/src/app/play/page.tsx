@@ -8,6 +8,7 @@ import { PredictWordSelect } from "@/components/play/PredictWordSelect";
 import WordPredict from "@/components/play/Result";
 import { TargetWordSelect } from "@/components/play/TargetWordSelect";
 import { atomWords } from "@/lib/store/data";
+import { Status } from "@/components/Status";
 
 export default function PagePlay(): ReactElement {
   const words = useAtomValue(atomWords);
@@ -21,13 +22,13 @@ export default function PagePlay(): ReactElement {
   }, []);
 
   return (
-    <p.div h="100%" w="100%">
-      <p.main
-        display="grid"
-        gridTemplateColumns="1fr 2fr 1fr"
-        h="100%"
-        w="100%"
-      >
+    <p.main
+      display="grid"
+      gridTemplateColumns="100%"
+      gridTemplateRows="1fr auto"
+      minH="100vh"
+    >
+      <p.article display="grid" gridTemplateColumns="2fr 4fr 2fr">
         <p.div bg="blue.100">
           <TargetWordSelect />
         </p.div>
@@ -37,7 +38,10 @@ export default function PagePlay(): ReactElement {
         <p.div bg="green.100">
           <WordPredict />
         </p.div>
-      </p.main>
-    </p.div>
+      </p.article>
+      <p.footer p="20px">
+        <Status />
+      </p.footer>
+    </p.main>
   );
 }
