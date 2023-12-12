@@ -11,6 +11,7 @@ import { requestWithActionStatus } from "@/lib/request";
 import { atomActionStatus, atomWords } from "@/lib/store/data";
 import useViewTransitionRouter from "@/hooks/useViewTransitionRouter";
 import { Status } from "@/components/Status";
+import { HowToUse } from "@/components/HowToUse";
 
 export default function Page(): ReactElement {
   const { getWords, getWordsMock } = useWords();
@@ -90,10 +91,8 @@ export default function Page(): ReactElement {
           >
             コトバのレンサ
           </p.p>
-          <p.div display="flex" gap="40px" justifyContent="center">
-            <p.div bg="gray.200" h="200px" rounded="md" w="200px" />
-            <p.div bg="gray.200" h="200px" rounded="md" w="200px" />
-            <p.div bg="gray.200" h="200px" rounded="md" w="200px" />
+          <p.div>
+            <HowToUse />
           </p.div>
         </p.div>
         <p.div textAlign="center">
