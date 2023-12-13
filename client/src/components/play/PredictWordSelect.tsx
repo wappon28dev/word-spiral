@@ -4,6 +4,8 @@ import { useAtom, useAtomValue } from "jotai";
 import { type WordData } from "types/word";
 import { atomWords, atomWordsSelection } from "@/lib/store/data";
 import { CheckButton } from "../CheckButton";
+import Ruby from "../Ruby";
+import { Emoji } from "../Emoji";
 
 export function PredictWordSelect(): ReactElement {
   const word = useAtomValue(atomWords);
@@ -27,8 +29,12 @@ export function PredictWordSelect(): ReactElement {
 
   return (
     <>
-      <p.h2 fontSize="3xl" fontWeight="900" p="20px" textAlign="center">
-        目標単語
+      <p.h2 fontSize="2xl" fontWeight="900" p="20px" textAlign="center">
+        “{wordSelection.data.target.word}{" "}
+        <Emoji emoji={wordSelection.data.target.emoji} />” に
+        <Ruby rb="近" rt="ちか" />い
+        <Ruby rb="単語" rt="たんご" />を<Ruby rb="選" rt="えら" />
+        ぼう！
       </p.h2>
 
       <p.div

@@ -4,6 +4,7 @@ import { styled as p } from "panda/jsx";
 import { useAtomValue, useSetAtom } from "jotai";
 import { atomWords, atomWordsSelection } from "@/lib/store/data";
 import { CheckButton } from "../CheckButton";
+import Ruby from "../Ruby";
 
 export function TargetWordSelect(): ReactElement {
   const words = useAtomValue(atomWords);
@@ -17,8 +18,11 @@ export function TargetWordSelect(): ReactElement {
 
   return (
     <>
-      <p.h2 fontSize="3xl" fontWeight="900" p="20px" textAlign="center">
-        目標単語
+      <p.h2 fontSize="2xl" fontWeight="900" p="20px" textAlign="center">
+        <Ruby rb="連想" rt="れんそう" />
+        させたい
+        <Ruby rb="単語" rt="たんご" />を<Ruby rb="選" rt="えら" />
+        ぼう
       </p.h2>
       <p.div
         display="flex"

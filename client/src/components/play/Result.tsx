@@ -9,6 +9,7 @@ import { atomActionStatus, atomWordsSelection } from "@/lib/store/data";
 import { useWords } from "@/hooks/useWords";
 import { CheckButton } from "../CheckButton";
 import { requestWithActionStatus } from "@/lib/request";
+import Ruby from "../Ruby";
 
 export default function Result(): ReactElement {
   const wordsSelection = useAtomValue(atomWordsSelection);
@@ -54,8 +55,14 @@ export default function Result(): ReactElement {
 
   return (
     <>
-      <p.h2 fontSize="3xl" fontWeight="900" p="20px" textAlign="center">
-        単語を選択
+      <p.h2 fontSize="2xl" fontWeight="900" p="20px" textAlign="center">
+        キミの
+        <Ruby rb="選" rt="えら" />
+        んだ
+        <Ruby rb="単語" rt="たんご" />で <p.br />
+        もとの
+        <Ruby rb="単語" rt="たんご" />を<Ruby rb="連想" rt="れんそう" />
+        させてみよう
       </p.h2>
       <p.div p="10px">
         <p.div opacity={0.4} pointerEvents="none" zoom={0.6}>

@@ -10,7 +10,7 @@ export async function askBard(env: ENV, prompt: string): Promise<string> {
   const chatIds: z.infer<typeof zChatIds> = JSON.parse(
     env.BARD_DEFAULT_CHAT_IDS
   );
-  const chat = bard.createChat(chatIds);
+  const chat = bard.createChat(undefined);
   const answer = (await chat.ask(prompt)) as string;
   return answer;
 }

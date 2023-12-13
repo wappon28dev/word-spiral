@@ -4,7 +4,7 @@ import { type AppType } from "@api";
 import { type HonoClient } from "@/types/client";
 import { atomApiUrl } from "@/lib/store/data";
 import { atomLang } from "@/lib/store/ui";
-import { wordData } from "@/assets/data";
+import { wordData, enData } from "@/assets/data";
 
 const defaultUrl = "http://localhost:8787";
 export const getHonoClient = (url = defaultUrl): HonoClient => hc<AppType>(url);
@@ -26,7 +26,7 @@ export function useWords() {
   }
 
   async function getWordsMock(): Promise<Awaited<ReturnType<typeof getWords>>> {
-    return wordData;
+    return enData;
   }
 
   const getPredict = client.v1.words[":lang"].predict.$post;

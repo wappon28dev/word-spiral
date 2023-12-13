@@ -12,6 +12,7 @@ import { atomActionStatus, atomWords } from "@/lib/store/data";
 import useViewTransitionRouter from "@/hooks/useViewTransitionRouter";
 import { Status } from "@/components/Status";
 import { HowToUse } from "@/components/HowToUse";
+import { LanguageToggle } from "@/components/LanguageToggle";
 
 export default function Page(): ReactElement {
   const { getWords, getWordsMock } = useWords();
@@ -107,6 +108,9 @@ export default function Page(): ReactElement {
           >
             はじめる
           </Button>
+        </p.div>
+        <p.div p="20px" position="absolute" right="0" top="0">
+          <LanguageToggle />
         </p.div>
       </p.article>
       <p.footer p="20px">

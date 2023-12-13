@@ -4,6 +4,7 @@ import { styled as p } from "panda/jsx";
 import { mdiCheck } from "@mdi/js";
 import Icon from "@mdi/react";
 import { token } from "panda/tokens";
+import { Emoji } from "./Emoji";
 
 export function CheckButton({
   onClick,
@@ -37,8 +38,8 @@ export function CheckButton({
       userSelect="none"
       w="100%"
     >
-      <p.div className="emoji" fontSize="4xl" textAlign="center">
-        {emoji}
+      <p.div fontSize="4xl" textAlign="center">
+        <Emoji emoji={emoji} />
       </p.div>
       <p.p fontSize="xl" textAlign="center">
         <p.span m="0 auto" textAlign="center">
