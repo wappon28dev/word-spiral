@@ -33,6 +33,6 @@
     "eslint-plugin-vue": "^9.17.0",
     "patch-package": "^8.0.0",
     "prettier": "^3.0.3",
-    "wrangler": "^3.14.0"
+    "wrangler": "^3.19.0"
   }
 }
